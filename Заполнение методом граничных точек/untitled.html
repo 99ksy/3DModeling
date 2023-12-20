@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Заполнение методом граничных точек</title>
+ <style>
+  body {
+   background-color: #f2f2f2;
+   font-family: Arial, sans-serif;
+  }
+  .container {
+   margin: 50px auto;
+   width: 500px;
+   padding: 20px;
+   background-color: #fff;
+   border-radius: 10px;
+   box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  }
+  #canvas {
+   margin-top: 20px;
+   border: 1px solid #ccc;
+   background-color: #fff;
+  }
+ </style>
+</head>
+<body>
+ <div class="container">
+  <h1>Заполнение методом граничных точек</h1>
+  <p>Введите координаты граничных точек:</p>
+  <form>
+   <label for="x1">X1:</label>
+   <input type="number" id="x1" name="x1" required><br><br>
+   <label for="y1">Y1:</label>
+   <input type="number" id="y1" name="y1" required><br><br>
+   <label for="x2">X2:</label>
+   <input type="number" id="x2" name="x2" required><br><br>
+   <label for="y2">Y2:</label>
+   <input type="number" id="y2" name="y2" required><br><br>
+   <label for="x3">X3:</label>
+   <input type="number" id="x3" name="x3" required><br><br>
+   <label for="y3">Y3:</label>
+   <input type="number" id="y3" name="y3" required><br><br>
+   <button type="button" onclick="fill()">Заполнить</button>
+  </form>
+  <canvas id="canvas" width="500" height="500"></canvas>
+ </div>
+
+ <script>
+  function fill() {
+   var canvas = document.getElementById("canvas");
+   var ctx = canvas.getContext("2d");
+
+   var x1 = parseInt(document.getElementById("x1").value);
+   var y1 = parseInt(document.getElementById("y1").value);
+   var x2 = parseInt(document.getElementById("x2").value);
+   var y2 = parseInt(document.getElementById("y2").value);
+   var x3 = parseInt(document.getElementById("x3").value);
+   var y3 = parseInt(document.getElementById("y3").value);
+
+   // Рисуем треугольник
+   ctx.beginPath();
+   ctx.moveTo(x1, y1);
+   ctx.lineTo(x2, y2);
+   ctx.lineTo(x3, y3);
+   ctx.closePath();
+   ctx.stroke();
+
+   // Заполняем треугольник
+   var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+   var pixels = imageData.data;
+   var stack = [];
+   stack.push([x1, y1]);
+
+   while (stack.length > 0) {
+    var currentPixel = stack.pop();
+    var x = currentPixel[0];
+    var y = currentPixel[1];
+    var index = (y * canvas.width + x) * 4;
+
+    if (pixels[index] === 0 && pixels[index+1] === 0 && pixels[index+2] === 0 && pixels[index+3] === 255) {
+     pixels[index] = 255;
+     pixels[index+1] = 0;
+     pixels[index+2] = 0;
+     pixels[index+3] = 255;
+
+     if (x > 0) {
+      stack.push([x-1, y]);
+     }
+     if (x < canvas.width-1) {
+      stack.push([x+1, y]);
+     }
+     if (y > 0) {
+      stack.push([x, y-1]);
+     }
+     if (y < canvas.height-1) {
+      stack.push([x, y+1]);
+     }
+    }
+   }
+
+   ctx.putImageData(imageData, 0, 0);
+  }
+ </script>
+</body>
+</html>

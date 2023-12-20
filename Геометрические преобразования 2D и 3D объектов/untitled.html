@@ -1,0 +1,181 @@
+  body {
+   background-color: #f2f2f2;
+   font-family: Arial, sans-serif;
+  }
+  .container {
+   margin: 50px auto;
+   width: 800px;
+   padding: 20px;
+   background-color: #fff;
+   border-radius: 10px;
+   box-shadow: 0 0 10px rgba(0,0,0,0.3);
+   display: flex;
+   flex-wrap: wrap;
+   align-items: center;
+   justify-content: center;
+  }
+  h1 {
+   text-align: center;
+   margin-bottom: 50px;
+  }
+  canvas {
+   border: 1px solid #ccc;
+   background-color: #fff;
+   margin: 20px;
+  }
+ </style>
+</head>
+<body>
+ <div class="container">
+  <h1>Геометрические преобразования 2D и 3D объектов</h1>
+  
+  <!– Пример 2D преобразований –>
+  <div>
+   <h2>Пример 2D преобразований</h2>
+   <canvas id="canvas2d" width="300" height="300"></canvas>
+   <div>
+    <label for="translateX">Смещение по X:</label>
+    <input type="range" id="translateX" name="translateX" min="-100" max="100" value="0"><br><br>
+
+    <label for="translateY">Смещение по Y:</label>
+    <input type="range" id="translateY" name="translateY" min="-100" max="100" value="0"><br><br>
+
+    <label for="scaleX">Масштаб по X:</label>
+    <input type="range" id="scaleX" name="scaleX" min="0.1" max="2" step="0.1" value="1"><br><br>
+
+    <label for="scaleY">Масштаб по Y:</label>
+    <input type="range" id="scaleY" name="scaleY" min="0.1" max="2" step="0.1" value="1"><br><br>
+
+    <label for="rotate">Поворот:</label>
+    <input type="range" id="rotate" name="rotate" min="-180" max="180" value="0"><br><br>
+   </div>
+  </div>
+
+  <!– Пример 3D преобразований –>
+  <div>
+   <h2>Пример 3D преобразований</h2>
+   <canvas id="canvas3d" width="300" height="300"></canvas>
+   <div>
+    <label for="translateZ">Смещение по Z:</label>
+    <input type="range" id="translateZ" name="translateZ" min="-100" max="100" value="-50"><br><br>
+
+    <label for="rotateX">Поворот по X:</label>
+    <input type="range" id="rotateX" name="rotateX" min="-180" max="180" value="0"><br><br>
+
+    <label for="rotateY">Поворот по Y:</label>
+    <input type="range" id="rotateY" name="rotateY" min="-180" max="180" value="0"><br><br>
+
+    <label for="rotateZ">Поворот по Z:</label>
+    <input type="range" id="rotateZ" name="rotateZ" min="-180" max="180" value="0"><br><br>
+   </div>
+  </div>
+ </div>
+
+ <script>
+  // Пример 2D преобразований
+  var canvas2d = document.getElementById("canvas2d");
+  var ctx2d = canvas2d.getContext("2d");
+
+  // Рисуем квадрат
+  ctx2d.fillRect(50, 50, 100, 100);
+
+  function draw2d() {
+   // Очищаем холст
+   ctx2d.clearRect(0, 0, canvas2d.width, canvas2d.height);
+
+   // Получаем значения ползунков
+   var translateX = parseInt(document.getElementById("translateX").value);
+   var translateY = parseInt(document.getElementById("translateY").value);
+   var scaleX = parseFloat(document.getElementById("scaleX").value);
+   var scaleY = parseFloat(document.getElementById("scaleY").value);
+   var rotate = parseInt(document.getElementById("rotate").value);
+
+   // Применяем преобразования
+   ctx2d.translate(translateX, translateY);
+   ctx2d.scale(scaleX, scaleY);
+   ctx2d.rotate(rotate * Math.PI / 180);
+
+   // Рисуем квадрат
+   ctx2d.fillRect(50, 50, 100, 100);
+  }
+
+  document.getElementById("translateX").addEventListener("input", draw2d);
+  document.getElementById("translateY").addEventListener("input", draw2d);
+  document.getElementById("scaleX").addEventListener("input", draw2d);
+  document.getElementById("scaleY").addEventListener("input", draw2d);
+  document.getElementById("rotate").addEventListener("input", draw2d);
+
+  // Пример 3D преобразований
+  var canvas3d
+  = document.getElementById("canvas3d");
+  var ctx3d = canvas3d.getContext("2d");
+
+  // Рисуем куб
+  ctx3d.beginPath();
+  ctx3d.moveTo(50, 50);
+  ctx3d.lineTo(150, 50);
+  ctx3d.lineTo(150, 150);
+  ctx3d.lineTo(50, 150);
+  ctx3d.closePath();
+  ctx3d.stroke();
+
+  ctx3d.beginPath();
+  ctx3d.moveTo(50, 50);
+  ctx3d.lineTo(100, 25);
+  ctx3d.lineTo(150, 50);
+  ctx3d.lineTo(100, 75);
+  ctx3d.closePath();
+  ctx3d.stroke();
+
+  ctx3d.beginPath();
+  ctx3d.moveTo(100, 75);
+  ctx3d.lineTo(100, 175);
+  ctx3d.stroke();
+
+  function draw3d() {
+   // Очищаем холст
+   ctx3d.clearRect(0, 0, canvas3d.width, canvas3d.height);
+
+   // Получаем значения ползунков
+   var translateZ = parseInt(document.getElementById("translateZ").value);
+   var rotateX = parseInt(document.getElementById("rotateX").value);
+   var rotateY = parseInt(document.getElementById("rotateY").value);
+   var rotateZ = parseInt(document.getElementById("rotateZ").value);
+
+   // Применяем преобразования
+   ctx3d.translate(canvas3d.width/2, canvas3d.height/2);
+   ctx3d.translate(0, 0, translateZ);
+   ctx3d.rotateX(rotateX * Math.PI / 180);
+   ctx3d.rotateY(rotateY * Math.PI / 180);
+   ctx3d.rotateZ(rotateZ * Math.PI / 180);
+
+   // Рисуем куб
+   ctx3d.beginPath();
+   ctx3d.moveTo(50, 50);
+   ctx3d.lineTo(150, 50);
+   ctx3d.lineTo(150, 150);
+   ctx3d.lineTo(50, 150);
+   ctx3d.closePath();
+   ctx3d.stroke();
+
+   ctx3d.beginPath();
+   ctx3d.moveTo(50, 50);
+   ctx3d.lineTo(100, 25);
+   ctx3d.lineTo(150, 50);
+   ctx3d.lineTo(100, 75);
+   ctx3d.closePath();
+   ctx3d.stroke();
+
+   ctx3d.beginPath();
+   ctx3d.moveTo(100, 75);
+   ctx3d.lineTo(100, 175);
+   ctx3d.stroke();
+  }
+
+  document.getElementById("translateZ").addEventListener("input", draw3d);
+  document.getElementById("rotateX").addEventListener("input", draw3d);
+  document.getElementById("rotateY").addEventListener("input", draw3d);
+  document.getElementById("rotateZ").addEventListener("input", draw3d);
+ </script>
+</body>
+</html>

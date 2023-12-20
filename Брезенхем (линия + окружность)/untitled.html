@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Алгоритм Брезенхема</title>
+ <style>
+  canvas {
+   border: 1px solid black;
+  }
+ </style>
+</head>
+<body>
+ <h1>Рисование линии алгоритмом Брезенхема</h1>
+ <canvas id="canvas1" width="400" height="400"></canvas>
+
+ <h1>Рисование окружности алгоритмом Брезенхема</h1>
+ <canvas id="canvas2" width="400" height="400"></canvas>
+
+ <script>
+  // Алгоритм Брезенхема для рисования линии
+  var canvas1 = document.getElementById('canvas1');
+  var ctx1 = canvas1.getContext('2d');
+
+  function drawLine(x1, y1, x2, y2) {
+   var dx = Math.abs(x2 - x1);
+   var dy = Math.abs(y2 - y1);
+   var sx = (x1 < x2) ? 1 : -1;
+   var sy = (y1 < y2) ? 1 : -1;
+   var err = dx - dy;
+
+   while (true) {
+    ctx1.fillRect(x1, y1, 1, 1);
+
+    if ((x1 == x2) && (y1 == y2)) {
+     break;
+    }
+
+    var e2 = 2 * err;
+    if (e2 > -dy) {
+     err -= dy;
+     x1 += sx;
+    }
+    if (e2 < dx) {
+     err += dx;
+     y1 += sy;
+    }
+   }
+  }
+
+  drawLine(50, 50, 150, 150);
+  drawLine(150, 150, 250, 50);
+
+  // Алгоритм Брезенхема для рисования окружности
+  var canvas2 = document.getElementById('canvas2');
+  var ctx2 = canvas2.getContext('2d');
+
+  function drawCircle(x0, y0, r) {
+   var x = r;
+   var y = 0;
+   var err = 0;
+
+   while (x >= y) {
+    ctx2.fillRect(x0 + x, y0 + y, 1, 1);
+    ctx2.fillRect(x0 + y, y0 + x, 1, 1);
+    ctx2.fillRect(x0 - y, y0 + x, 1, 1);
+    ctx2.fillRect(x0 - x, y0 + y, 1, 1);
+    ctx2.fillRect(x0 - x, y0 - y, 1, 1);
+    ctx2.fillRect(x0 - y, y0 - x, 1, 1);
+    ctx2.fillRect(x0 + y, y0 - x, 1, 1);
+    ctx2.fillRect(x0 + x, y0 - y, 1, 1);
+
+    y += 1;
+    err += 1 + 2 * y;
+    if (2 * (err - x) + 1 > 0) {
+     x -= 1;
+     err += 1 - 2 * x;
+    }
+   }
+  }
+
+  drawCircle(200, 200, 100);
+ </script>
+</body>
+</html>

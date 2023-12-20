@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Отсечение по алгоритму Цируса-Бека</title>
+ <style>
+  canvas {
+   border: 1px solid black;
+  }
+ </style>
+</head>
+<body>
+ <h1>Отсечение отрезка по алгоритму Цируса-Бека</h1>
+ <canvas id="canvas" width="400" height="400"></canvas>
+
+ <script>
+  // Алгоритм отсечения по алгоритму Цируса-Бека
+  var canvas = document.getElementById('canvas');
+  var ctx = canvas.getContext('2d');
+
+  function clipLine(x1, y1, x2, y2, xmin, ymin, xmax, ymax) {
+   var dx = x2 - x1;
+   var dy = y2 - y1;
+
+   var p1 = [-dx, dx, -dy, dy];
+   var q1 = [x1 - xmin, xmax - x1, y1 - ymin, ymax - y1];
+
+   var p = [];
+   var q = [];
+
+   for (var i = 0; i < 4; i++) {
+    if (p1[i] == 0) {
+     if (q1[i] < 0) {
+      return;
+     }
+     else {
+     p.push(p1[i]);
+     q.push(q1[i]);
+    }
+   }
+
+   var u1 = 0;
+   var u2 = 1;
+
+   for (var i = 0; i < p.length; i++) {
+    var t = q[i] / p[i];
+
+    if (p[i] < 0) {
+     u1 = Math.max(u1, t);
+     else {
+     u2 = Math.min(u2, t);
+    }
+   }
+
+   if (u1 > u2) {
+    return;
+   }
+
+   var x1c = x1 + u1 * dx;
+   var y1c = y1 + u1 * dy;
+   var x2c = x1 + u2 * dx;
+   var y2c = y1 + u2 * dy;
+
+   ctx.beginPath();
+   ctx.moveTo(x1c, y1c);
+   ctx.lineTo(x2c, y2c);
+   ctx.stroke();
+  }
+
+  ctx.rect(100, 100, 200, 200);
+  ctx.stroke();
+
+  clipLine(50, 150, 250, 150, 100, 100, 300, 300);
+  clipLine(150, 50, 150, 250, 100, 100, 300, 300);
+  clipLine(50, 50, 250, 250, 100, 100, 300, 300);
+  clipLine(350, 150, 450, 150, 100, 100, 300, 300);
+ </script>
+</body>
+</html>
