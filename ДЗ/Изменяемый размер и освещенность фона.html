@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Изменяемый размер и освещенность фона</title>
+ <style>
+  body {
+   background-color: rgb(10, 10, 100);
+   color: #fff;
+   font-size: 20px;
+   padding: 20px;
+  }
+ </style>
+</head>
+<body>
+ <h1>Изменяемый размер и освещенность фона</h1>
+ <p>Введите значение освещенности фона:</p>
+ <input type="range" min="0" max="255" value="100" id="brightness" onchange="changeBackground()">
+ <p>Введите значение размера шрифта:</p>
+ <input type="range" min="10" max="50" value="20" id="fontSize" onchange="changeFontSize()">
+ <script>
+  function changeBackground() {
+   var brightnessValue = document.getElementById("brightness").value;
+   document.body.style.backgroundColor = "rgb(10, 10, " + brightnessValue + ")";
+  }
+  function changeFontSize() {
+   var fontSizeValue = document.getElementById("fontSize").value;
+   document.body.style.fontSize = fontSizeValue + "px";
+  }
+ </script>
+</body>
+</html>

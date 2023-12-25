@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Resizable Roger's ABCD</title>
+ <style>
+  #rogers {
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   width: 200px;
+   height: 200px;
+   border: 1px solid black;
+   resize: both;
+   overflow: auto;
+  }
+
+  #rogers svg {
+   width: 100%;
+   height: 100%;
+  }
+ </style>
+</head>
+<body>
+ <div id="rogers">
+  <svg viewBox="0 0 10 9">
+   <path d="M0,0 L10,0 L7,9 L3,9 Z" stroke="black" fill="transparent" stroke-width="0.5" />
+   <line x1="0" y1="0" x2="0" y2="-5" stroke="black" stroke-width="0.5" />
+  </svg>
+ </div>
+</body>
+</html>
+
+<script>
+ var rogers = document.getElementById("rogers");
+ var svg = rogers.getElementsByTagName("svg")[0];
+
+ function resize() {
+  var width = rogers.offsetWidth;
+  var height = rogers.offsetHeight;
+
+  svg.setAttribute("viewBox", "0 0 " + width/10 + " " + height/9);
+ }
+
+ resize();
+ window.addEventListener("resize", resize);
+</script>
